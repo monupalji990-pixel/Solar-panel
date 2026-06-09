@@ -17,3 +17,5 @@ Thumbs.db
 # Ignore schedular local env containing secrets
 Schedular/.env
 
+.env
+autoquote/.env
