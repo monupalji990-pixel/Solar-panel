@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "pretty": true,
+        "strict": false,
+        "sourceMap": true,
+        "target": "es6",
+        "resolveJsonModule": true,
+        "outDir": "./dist",
+        "noImplicitThis": false,
+        "allowJs": true,
+        "skipLibCheck": true
+    },
+    "include": [
+        "bin/*.ts",
+        "middlewares/*.ts",
+        "models/*.ts",
+        "templates/*.ts",
+        "projects/**/*.ts",
+        "projects/docusign/config/*.txt",
+        "sharedModules/**/*.ts",
+        "test/**/*.ts",
+        "projects/**/*.json",
+        "sharedModules/**/*.json",
+        "projects/templates/pdf-digital-form.js",
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
