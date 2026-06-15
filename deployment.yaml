@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: APP_NAME
+  namespace: NAME_SPACE
+spec:
+  selector:
+    matchLabels:
+      app: APP_NAME
+  replicas: REPLICA
+  minReadySeconds: 60
+  template:
+    metadata:
+      labels:
+        app: APP_NAME
+    spec:
+      containers:
+      - name: APP_NAME
+        image: DOCKER_ACC/DOCKER_REPO:SVC_NAMEBUILD_NUMBER
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: PORT
+      imagePullSecrets:
+      - name: DOCKER_SECRET
