@@ -1,0 +1,37 @@
+[
+    {
+        "email": "admin11@edan.com",
+        "password": "Powerfly@2021",
+        "name": "Admin",
+        "role": "5d5b91e01c9d440000c9990f",
+        "isActive": 1
+    },
+    {
+        "email": "management@edan.com",
+        "password": "Powerfly@2021",
+        "name": "Management",
+        "role": "5d5b92031c9d440000c99914",
+        "isActive": 1
+    },
+    {
+        "email": "partner@edan.com",
+        "password": "Powerfly@2021",
+        "name": "Partner",
+        "role": "5d5b92031c9d440000c99911",
+        "isActive": 1
+    },
+    {
+        "email": "sales-rep@edan.com",
+        "password": "Powerfly@2021",
+        "name": "Sales Rep",
+        "role": "5d5b92031c9d440000c99912",
+        "isActive": 1
+    },
+    {
+        "email": "observing-partner@edan.com",
+        "password": "Powerfly@2021",
+        "name": "Observing Partner",
+        "role": "5d5b91db1c9d440000c9991d",
+        "isActive": 1
+    }
+]

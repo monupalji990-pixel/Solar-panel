@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        html {
+            zoom: 0.5;
+        }
+        .container {
+            width: 95%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: right;
+            color: #28007E;
+            font-size: 50px;
+            margin: 0;
+        }
+
+        .logo {
+            width: 250px;
+        }
+
+        .company-details {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .company-details td {
+            padding: 5px 10px;
+            vertical-align: top;
+        }
+
+        .company-details .left {
+            text-align: left;
+            width: 50%;
+        }
+
+        .company-details .right {
+            text-align: right;
+        }
+
+        .right-group {
+            width: 100%;
+        }
+
+        .right-group td {
+            padding: 0;
+        }
+
+        .client-details,
+        .service-user-details {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        .client-details td,
+        .service-user-details td {
+            padding: 5px 10px;
+            vertical-align: top;
+        }
+
+        .client-details .right {
+            text-align: right;
+        }
+
+        .bold {
+            font-weight: bold;
+            color: #28007E;
+        }
+
+        .heading {
+            background-color: #71943A;
+            padding: 10px !important;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .invoice-details,
+        .payment-details {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .invoice-details th,
+        .invoice-details td,
+        .payment-details th,
+        .payment-details td {
+            padding: 8px;
+        }
+
+        /* .invoice-details thead{
+            background: rgb(40, 0, 126);
+            background: linear-gradient(171deg, rgba(40,0,126,1) 0%, rgba(113,148,58,1) 100%, rgba(113,148,58,1) 100%);
+        } */
+
+        .invoice-details th {
+            background-color: #71943A;
+            text-align: left;
+            color: #ffffff;
+        }
+
+        .invoice-details .right-align {
+            text-align: right;
+        }
+
+        .invoice-summary {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .invoice-summary td {
+            padding: 10px;
+        }
+
+        .invoice-summary .right-align {
+            text-align: right;
+        }
+
+        .total-section .right-align {
+            text-align: right;
+        }
+
+        .total-section .bold {
+            font-weight: bold;
+        }
+
+        .bank-details {
+            margin-top: 30px;
+            padding-top: 10px;
+        }
+
+        .bank-details td {
+            padding: 5px 0;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: center;
+            color: #666;
+        }
+
+        .highlight {
+            color: #E74C3C;
+            font-weight: bold;
+        }
+
+        .divider {
+            height: 2px;
+            background: #e2e2e2;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .invoice-data .grey-text {
+            color: #989898;
+        }
+
+        .invoice-data .grey-back {
+            background: #efefef;
+            padding: 10px;
+            display: inline-table;
+        }
+
+        .invoice-data .invoice-space tr td {
+            margin: 5px 0;
+            display: inline-table;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Invoice Header -->
+        <h1>INVOICE</h1>
+
+        <!-- Company Information -->
+        <table class="company-details">
+            <tr>
+                <td class="left bold" colspan="1">
+
+                </td>
+                <td class="right" colspan="3">
+                    <table class="right-group">
+                        <br />
+                        <tr style="margin-top: 20px;">
+                            <!-- <td class="right bold">{{fromCompanyName}}</td> -->
+                            <td class="right bold">Edanpowerportal Limited</td>
+                        </tr>
+                        <tr>
+                            <!-- <td class="right">{{fromCompanyAddress}}</td> -->
+                            <td class="right">
+                                Leslie Square<br /> Office 24A Block C<br /> Great Barr,<br />Birmingham,<br />West
+                                Midlands<br />B44 8NH<br />United Kingdom<br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="right">
+                                <br />
+                                Phone: 0121 389 2926
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="right">
+                                <br />
+                                Email: info@edanpower.co.uk
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <div class="divider"></div>
+
+        <!-- Client Information -->
+        <table class="invoice-data" style="width: 100%;">
+            <tr>
+                <td>
+                    <table class="client-details">
+                        <tr>
+                            <td class="grey-text">Invoice To</td>
+                        </tr>
+                        <tr>
+                            <td class="bold">{{ConsumerCompany}}</td>
+                        </tr>
+
+                        {{#if ConsumerCompanyAddressOne}}
+                        <tr>
+                            <td>{{ConsumerCompanyAddressOne}}</td>
+                        </tr>
+                        {{else}}
+                        {{/if}}
+                        
+                        {{#if ConsumerCompanyAddressTwo}}
+                        <tr>
+                            <td>{{ConsumerCompanyAddressTwo}}</td>
+                        </tr>
+                        {{else}}
+                        {{/if}}
+
+                        {{#if town}}
+                        <tr>
+                            <td>{{town}}</td>
+                        </tr>
+                        {{else}}
+                        {{/if}}
+
+                        {{#if county}}
+                        <tr>
+                            <td>{{county}}</td>
+                        </tr>
+                        {{else}}
+                        {{/if}}
+
+                        {{#if postcode}}
+                        <tr>
+                            <td>{{postcode}}</td>
+                        </tr>
+                        {{else}}
+                        {{/if}}
+
+                        <tr>
+                            <td><br>Phone: {{CompanyConsumerMobile}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Email: {{CompanyConsumerEmail}}</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td>
+                    <table style="text-align: right; width: 100%;" class="invoice-space">
+                        <tr style="margin-top: 20px;">
+                            <td class="right"><span class="bold">Invoice Number</span>: {{invoiceNumber}}</td>
+                        </tr>
+                        <tr>
+                            <td class="right"><span class="bold">Invoice Date</span>: {{dueDate}}</td>
+                        </tr>
+                        <tr></tr>
+                        <td class="right"><span class="bold">Payment Due</span>: {{paymentDue}}</td>
+            </tr>
+            <tr>
+                <td class="right">
+                    <span class="grey-back bold">
+                        Amount Due (GBP): {{totalAmount}}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>{{email}}</td>
+            </tr>
+            <tr>
+                <td>{{mobile}}</td>
+            </tr>
+        </table>
+        </td>
+        </tr>
+        </table>
+
+
+        <!-- Invoice Details Table -->
+        <table class="invoice-details">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th class="right-align">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each lineItems}}
+                <tr style="border: 2px solid #f2f2f2;">
+                    <td><span class="bold">{{this.title}}</span><br>{{this.description}}</td>
+                    <td>{{this.quantity}}</td>
+                    <td>£{{this.price}}</td>
+                    <td class="right-align">£{{this.totalAmount}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <!-- Invoice Summary -->
+        <table class="invoice-summary">
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="right-align bold">Subtotal:</td>
+                <td class="right-align">{{subTotal}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="right-align">VAT 20%:</td>
+                <td class="right-align">{{tax20}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="right-align">VAT 5%:</td>
+                <td class="right-align">{{tax5}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="right-align">Discount:</td>
+                <td class="right-align">{{discount}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td colspan="2" style="width: 50%;">
+                    <div class="divider" style="margin:5px 0;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="right-align bold">Total:</td>
+                <td class="right-align">{{totalAmount}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td colspan="2" style="width: 50%;">
+                    <div class="divider" style="margin:5px 0;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="right-align bold">Amount Due (GBP):</td>
+                <td class="right-align bold">{{totalAmount}}</td>
+            </tr>
+        </table>
+
+        <!-- Bank Details and Payment Instructions -->
+        <table class="bank-details">
+            <tr>
+                <td class="bold">Notes / Terms</td>
+            </tr>
+            <tr>
+                <td>Please pay this invoice to</td>
+            </tr>
+            <tr>
+                <td><strong>{{fromCompanyName}}</strong></td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+
+</html>
