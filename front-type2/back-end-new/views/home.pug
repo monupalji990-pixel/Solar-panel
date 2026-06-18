@@ -1,0 +1,46 @@
+block content
+  h1 APIS
+  p.lead APIs Of this Application.
+  hr
+  p.lead
+    b APIS Details
+  table(border=1)
+    tr
+      th API Name
+      th API Code
+      th request
+      th Response
+      th desc
+    each val in apis 
+      tr
+        td #{val.api}
+        td #{val.APICode}
+        td 
+          i {
+          br
+          each key, index in val.request
+            b #{index}:
+            i  #{JSON.stringify(key)}, 
+            br
+          i }
+        td 
+          i {
+          br
+          each key, index in val.response
+            b #{index}:
+            i  #{JSON.stringify(key)}, 
+            br
+          i }
+        td #{val.desc}
+  hr
+  hr
+  p.lead
+    b Status Codes
+  table(border=1)
+    tr
+      th code
+      th status name
+    each val, index in statusCodes
+      tr
+        td #{val}
+        td #{index}

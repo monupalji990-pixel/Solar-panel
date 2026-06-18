@@ -41,5 +41,15 @@ const SiteSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
+// Indexes used by listCompanyRegUser search (gas/electric/chip&pin/siteName/postcode)
+SiteSchema.index({ company: 1 });
+SiteSchema.index({ 'gas.MPRN': 1 });
+SiteSchema.index({ 'electric.topLine': 1 });
+SiteSchema.index({ 'electric.meterNumber': 1 });
+SiteSchema.index({ 'chipandpin.midNumber': 1 });
+SiteSchema.index({ siteName: 1 });
+SiteSchema.index({ postcode: 1 });
+
 const Site = mongoose.model('Site', SiteSchema);
 export default Site;
+

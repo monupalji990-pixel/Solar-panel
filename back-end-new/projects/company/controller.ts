@@ -337,8 +337,6 @@ class RegUserController {
           as: 'Site'
         }
       },
-      { $match: filter },
-      { $skip: skipNumber },
       {
         $lookup: {
           from: 'users',
@@ -347,6 +345,8 @@ class RegUserController {
           as: 'Assignee'
         }
       },
+      { $match: filter },
+      { $skip: skipNumber },
       {
         $project: {
           companyID: 1,
@@ -375,6 +375,7 @@ class RegUserController {
       },
       { $limit: limitNumber }
     ]);
+
     try {
       const data = await companyQuery.exec();
 
@@ -418,7 +419,11 @@ class RegUserController {
         data[index].midNumber = midNumber;
       });
 
+      // NOTE: counting adds an extra aggregation which can significantly slow down paging.
+      // If the UI doesn't need accurate count immediately, keep it disabled for performance.
       res.send({ data, count: 0, success: true });
+
+
     } catch (err) {
       console.log(err);
       res.send({ success: false, message: err.errMsg });

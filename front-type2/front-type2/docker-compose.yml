@@ -1,0 +1,42 @@
+version: '3'
+services:
+  client:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3081:3000"
+    volumes:
+      - "/app/node_modules"
+      - "./:/app"
+    deploy:
+      resources:
+        limits:
+          memory: 2000m
+
+
+# version: '3'
+# services:
+#   client:
+#     stdin_open: true
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#       - "3000:80"
+#     volumes:
+#       - ".:/app"
+#       - "/app/node_modules"
+      
+
+
+# version: '3'
+# services:
+#   web:
+#     build: .
+#     ports:
+#      - "8087:8087"
+#     volumes:
+#      - ./
+     

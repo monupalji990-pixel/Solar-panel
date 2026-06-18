@@ -1,0 +1,128 @@
+@media (min-width: 992px) and (max-width: 1249px) {
+  div#profile-user-drawer,
+  div#profile-first-drawer,
+  div#profile-second-drawer,
+  div#profile-third-drawer,
+  div#profile-size1-drawer,
+  div#profile-forth-drawer,
+  div#profile-small-drawer,
+  div#profile-quote-drawer {
+    max-width: 100%;
+    min-width: 100%;
+  }
+}
+
+/* IPAD PRO */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .cardMainCLM {
+    display: block;
+    align-items: center;
+    justify-content: center;
+  }
+  .cardMainCLM .CardInCLM1 {
+    justify-content: center;
+    display: flex;
+  }
+  .cardMainCLM .CardInCLM2 {
+    justify-content: center;
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+  }
+}
+/* IPAD */
+@media (min-width: 768px) and (max-width: 991px) {
+  div#profile-user-drawer,
+  div#profile-first-drawer,
+  div#profile-second-drawer,
+  div#profile-third-drawer,
+  div#profile-size1-drawer,
+  div#profile-forth-drawer,
+  div#profile-small-drawer,
+  div#profile-quote-drawer {
+    max-width: 100%;
+    min-width: 100%;
+  }
+}
+/* MOBILE */
+@media (max-width: 767px) {
+}
+@media (max-width: 627px) {
+}
+@media (min-width: 481px) and (max-width: 626px) {
+}
+@media (max-width: 480px) {
+  #headerSpace .TableScrolling .MuiToolbar-regular {
+    display: inherit;
+    padding-top: 10px;
+  }
+  #headerSpace .TableScrolling .MuiToolbar-regular h6.MuiTypography-h6 {
+    padding-bottom: 10px;
+  }
+  #headerSpace .TableScrolling .MuiToolbar-regular .MuiInputBase-root {
+    margin-bottom: 25px;
+  }
+  #headerSpace .TableScrolling .MuiToolbar-regular .MuiTablePagination-input {
+    margin-bottom: 0;
+  }
+  #headerSpace .TableScrolling .MuiToolbar-regular div div span button {
+    min-width: 83px;
+    max-width: 50px;
+    background: #193562;
+    color: #ffffff;
+    border-radius: 50px;
+    margin: 4px;
+    padding: 6px;
+  }
+
+  .MuiDrawer-modal .TableScrolling .MuiToolbar-regular {
+    display: inherit;
+    padding-top: 10px;
+  }
+  .MuiDrawer-modal .TableScrolling .MuiToolbar-regular h6.MuiTypography-h6 {
+    padding-bottom: 10px;
+  }
+  .MuiDrawer-modal .TableScrolling .MuiToolbar-regular .MuiInputBase-root {
+    margin-bottom: 25px;
+  }
+  .MuiDrawer-modal
+    .TableScrolling
+    .MuiToolbar-regular
+    .MuiTablePagination-input {
+    margin-bottom: 0;
+  }
+  .MuiDrawer-modal .TableScrolling .MuiToolbar-regular div div span button {
+    min-width: 83px;
+    max-width: 50px;
+    background: #193562;
+    color: #ffffff;
+    border-radius: 50px !important;
+    margin: 4px;
+    padding: 6px !important;
+  }
+  .TableScrolling .MuiToolbar-root span button.MuiButtonBase-root:last-child {
+    padding: 12px;
+  }
+  .TableScrolling table tbody tr td {
+    font-size: 0.9rem !important;
+  }
+  #headerSpace .TableScrolling .MuiTablePagination-toolbar {
+    display: flex;
+    padding-top: 0;
+  }
+  .MuiDrawer-modal .TableScrolling .MuiTablePagination-toolbar {
+    display: flex;
+    padding-top: 0;
+  }
+
+  .MuiTableContainer-root
+    .MuiTable-root
+    tbody.MuiTableBody-root
+    tr.MuiTableRow-root {
+    display: grid;
+  }
+}
+@media (max-width: 360px) {
+}
+@media (max-width: 320px) {
+}

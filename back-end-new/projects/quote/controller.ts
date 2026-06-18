@@ -170,6 +170,10 @@ class CommonModule {
   }
 }
 
+import { cachedTTL } from '../../middlewares/cacheResponse';
+import { logQueryTime } from '../../middlewares/logQueryTime';
+import { clearCacheByPrefix } from '../../utils/redisCache';
+
 class AdminController {
 
   async getPdf(req: Request, res: Response) {
@@ -307,37 +311,14 @@ class AdminController {
       if (req.query.limit) limitNumber = Number(req.query.limit);
 
       if (req.path.includes("/count")) {
+        // NOTE: No need for lookups for count; keep $match first for index usage.
         const count = await QuoteModel.aggregate([
           { $match: filterBeforeLookup },
-          {
-            $lookup: {
-              from: 'companies',
-              localField: 'Company',
-              foreignField: '_id',
-              as: 'Company'
-            }
-          },
-          {
-            $lookup: {
-              from: 'users',
-              localField: 'Consumer',
-              foreignField: '_id',
-              as: 'Consumer'
-            }
-          },
-          {
-            $project: {
-              month: { $month: '$createdAt' },
-              year: { $year: '$createdAt' },
-              quoteStatus: 1,
-              serviceType: 1,
-              isDelete: 1
-            }
-          },
           { $match: filter },
           { $match: monthAndYear },
           { $count: "count" }
         ]);
+
 
         let countData = 0;
         if (count.length > 0) {
@@ -347,8 +328,17 @@ class AdminController {
         res.send({ count: countData, success: true });
       } else {
         const dataQuery = QuoteModel.aggregate([
-          { $sort: sortObj },
+          // 1) Always filter first to use indexes and reduce docs early.
           { $match: filterBeforeLookup },
+          { $match: filter },
+          { $match: monthAndYear },
+
+          // 2) Sort + paginate before lookups as requested.
+          { $sort: sortObj },
+          { $skip: skipNumber },
+          { $limit: limitNumber },
+
+          // 3) Lookups only for paginated subset.
           {
             $lookup: {
               from: 'users',
@@ -397,37 +387,16 @@ class AdminController {
               as: 'Assignee'
             }
           },
-          {
-            $unwind: {
-              "path": "$Company",
-              "preserveNullAndEmptyArrays": true
-            }
-          },
-          {
-            $unwind: {
-              "path": "$Consumer",
-              "preserveNullAndEmptyArrays": true
-            }
-          },
-          {
-            $unwind: {
-              "path": "$Site",
-              "preserveNullAndEmptyArrays": true
-            }
-          },
-          {
-            $unwind: {
-              "path": "$Assignee",
-              "preserveNullAndEmptyArrays": true
-            }
-          },
-          { $match: filter },
-          { $skip: skipNumber },
+
+          { $unwind: { path: "$Company", preserveNullAndEmptyArrays: true } },
+          { $unwind: { path: "$Consumer", preserveNullAndEmptyArrays: true } },
+          { $unwind: { path: "$Site", preserveNullAndEmptyArrays: true } },
+          { $unwind: { path: "$Assignee", preserveNullAndEmptyArrays: true } },
+
+          // 4) Project only required fields at the end.
           {
             $project: {
               QuoteID: 1,
-              month: { $month: '$createdAt' },
-              year: { $year: '$createdAt' },
               serviceType: 1,
               subServiceType: 1,
               quoteStatus: 1,
@@ -451,10 +420,9 @@ class AdminController {
               "Room In Roof Installer": 1,
               "ASHP Installer": 1,
             }
-          },
-          { $match: monthAndYear },
-          { $limit: limitNumber }
+          }
         ]);
+
 
         const quotes = await dataQuery.exec();
         res.send({ data: quotes, count: 0, success: true });

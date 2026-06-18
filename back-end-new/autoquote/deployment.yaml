@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "autoquote"
+  namespace: "stg-env"
+spec:
+  selector:
+    matchLabels:
+      app: "autoquote"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "autoquote"
+    spec:
+      containers:
+      - name: "autoquote"
+        image: nginx
+        ports:
+        - containerPort: 8333
+      imagePullSecrets:
+      - name: user123
+

@@ -1,0 +1,1 @@
+export const CONSUMER_ROLE_ID = "5d5b92031c9d440000c99915";

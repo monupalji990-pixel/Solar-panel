@@ -115,12 +115,16 @@ const userSchema = new mongoose.Schema({
     passwordResetToken: String,
     passwordResetExpires: Date,
     name: { type: String, index: true },
+    // indexes for listCompanyRegUser search (Contact.name/phone/mobile)
+    // (phone/mobile already indexed below; keeping explicit for clarity)
+
     lastName: { type: String, index: true },
     firstName: { type: String, index: true },
     gender: String,
     jobTitle: String,
     mobile: { type: String, index: true },
     phone: { type: String, index: true },
+
     portalAccess: Boolean,
     homeAddress: String,
     consumerId: String,

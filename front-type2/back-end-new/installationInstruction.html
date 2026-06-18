@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Documents</title>
+
+    <head>
+        <style>
+            html {
+                zoom: 0.5;
+            }
+
+            .watermark {
+                opacity: 0.2;
+                position: absolute;
+                top: 40%;
+                left: 30%;
+            }
+
+            .watermark img {
+                width: 70%;
+            }
+
+            .main_wrapper {
+                margin: 0;
+                padding: 20px;
+                position: relative;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            }
+
+            .main_wrapper .heading h1 {
+                font-size: 28px;
+                text-align: center;
+            }
+
+            .table {
+                display: table;
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .table-row {
+                display: table-row;
+                margin-bottom: 10px;
+            }
+
+            .table-cell {
+                display: table-cell;
+                padding: 10px;
+                font-size: 18px;
+                color: #ababab;
+            }
+
+            .table-cell span {
+                color: #000000;
+                font-size: 22px;
+            }
+        </style>
+    </head>
+</head>
+
+<body>
+    <div class="main_wrapper">
+        <div class="heading">
+            <h1>Installation Instruction </h1>
+        </div>
+
+        <table class="table">
+            <tr class="table-row">
+                <td class="table-cell">
+                    Customer Name <br />
+                    <span class="row_value">{{customerName}}</span>
+                </td>
+
+                <td class="table-cell">
+                    Customer Address <br />
+                    <span class="row_value">{{customerAddress}}</span>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell">
+                    Telephone Number <br />
+                    <span class="row_value">{{mobile}}</span>
+                </td>
+
+                <td class="table-cell">
+                    Postcode <br />
+                    <span class="row_value">{{postcode}}</span>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell">
+                    Construct <br />
+                    <span class="row_value">{{construct}}</span>
+                </td>
+
+                <td class="table-cell">
+                    Floor <br />
+                    <span class="row_value">{{floor}}</span>
+                </td>
+
+                <td class="table-cell">
+                    Previous <br />
+                    <span class="row_value">{{previous}}</span>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell" colspan="3">
+                    Property <br />
+                    <span class="row_value">{{property}}</span>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell" colspan="3">
+                    Measures Note <br />
+                    <span class="row_value">{{measures}}</span>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell" colspan="3">
+                    Roof Spaces <br />
+                    {{#each roofSpaces}}
+                    <span class="row_value">{{this.label}}</span>,
+                    {{/each}}
+                </td>
+            </tr>
+
+            {{#each roofSpacesFields}}
+            <tr class="table-row">
+                <td class="table-cell">
+                    <h4 style="color: #000000;">{{this.label}}</h4>
+                </td>
+                <td class="table-cell">
+                    Roof Type <br />
+                    <span class="row_value">{{this.roofType}}</span>
+                </td>
+                <td class="table-cell">
+                    Post Evidence <br />
+                    <span class="row_value">{{this.postEvidence}}</span>
+                </td>
+                <td class="table-cell">
+                    Pre Evidence <br />
+                    <span class="row_value">{{this.preEvidence}}</span>
+                </td>
+                <td class="table-cell">
+                    Remarks <br />
+                    <span class="row_value">{{this.remarks}}</span>
+                </td>
+            </tr>
+            {{/each}}
+
+            <tr class="table-row">
+                <td class="table-cell" colspan="3">
+                    <hr />
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell" colspan="3">
+                    Wall Areas <br />
+                    {{#each wallAreas}}
+                    <span class="row_value">{{this.label}}</span>,
+                    {{/each}}
+                </td>
+            </tr>
+
+            {{#each wallAreasFields}}
+            <tr class="table-row">
+                <td class="table-cell">
+                    <h4 style="color: #000000;">{{this.label}}</h4>
+                </td>
+                <td class="table-cell">
+                    Wall Type <br />
+                    <span class="row_value">{{this.wallType}}</span>
+                </td>
+                <td class="table-cell">
+                    Post Requirement <br />
+                    <span class="row_value">{{this.wallPostRequirement}}</span>
+                </td>
+                <td class="table-cell">
+                    Pre Evidence <br />
+                    <span class="row_value">{{this.preEvidence}}</span>
+                </td>
+                <td class="table-cell">
+                    Remarks <br />
+                    <span class="row_value">{{this.remarks}}</span>
+                </td>
+            </tr>
+            {{/each}}
+
+            <tr class="table-row">
+                <td class="table-cell" colspan="5">
+                    <hr />
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                {{#if CB_batchNumber}}
+                <td class="table-cell">
+                    Cavity Bead - Batch Number <br />
+                    <span class="row_value">{{CB_batchNumber}}</span>
+                </td>
+                {{else}}
+                {{/if}}
+
+                {{#if CB_glueQuantity}}
+                <td class="table-cell">
+                    Cavity Bead - Quantity of Glue <br />
+                    <span class="row_value">{{CB_glueQuantity}}</span>
+                </td>
+                {{else}}
+                {{/if}}
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell" colspan="5">
+                    <hr />
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell" colspan="3">
+                    Heating <br />
+                    {{#each heating}}
+                    <span class="row_value">{{this.label}}</span>,
+                    {{/each}}
+                </td>
+            </tr>
+
+            {{#each heatingFields}}
+            <tr class="table-row">
+                <td class="table-cell">
+                    <h4 style="color: #000000;">{{this.label}}</h4>
+                </td>
+                <td class="table-cell">
+                    Location <br />
+                    <span class="row_value">{{this.location}}</span>
+                </td>
+                <td class="table-cell">
+                    Post Requirement <br />
+                    <span class="row_value">{{this.postRequirement}}</span>
+                </td>
+                <td class="table-cell">
+                    Pre Evidence <br />
+                    <span class="row_value">{{this.preEvidence}}</span>
+                </td>
+                <td class="table-cell">
+                    Remarks <br />
+                    <span class="row_value">{{this.remarks}}</span>
+                </td>
+            </tr>
+            {{/each}}
+
+            <tr class="table-row">
+                <td class="table-cell" colspan="5">
+                    <hr />
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell" colspan="3">
+                    <h3 style="color: #000000;">Ventilation</h3>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell">
+                    Trickle vents <br />
+                    <span class="row_value">{{trickleVents}}</span>
+                </td>
+
+                <td class="table-cell">
+                    Ext Fan1 <br />
+                    <span class="row_value">{{extFan1}}</span>
+                </td>
+
+                <td class="table-cell">
+                    Ext Fan2 <br />
+                    <span class="row_value">{{extFan2}}</span>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell">
+                    Ext Fan3 <br />
+                    <span class="row_value">{{extFan3}}</span>
+                </td>
+
+                <td class="table-cell">
+                    Ext Fan4 <br />
+                    <span class="row_value">{{extFan4}}</span>
+                </td>
+
+                <td class="table-cell">
+                    Ext Fan5 <br />
+                    <span class="row_value">{{extFan5}}</span>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell">
+                    Pre EPC <br />
+                    <span class="row_value">{{preEPC}}</span>
+                </td>
+
+                <td class="table-cell">
+                    Post EPC <br />
+                    <span class="row_value">{{postEPC}}</span>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell">
+                    Rating <br />
+                    <span class="row_value">{{preEPCRating}}</span>
+                </td>
+
+                <td class="table-cell">
+                    Rating <br />
+                    <span class="row_value">{{postEPCRating}}</span>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell">
+                    Notes <br />
+                    <span class="row_value">{{preNotes}}</span>
+                </td>
+
+                <td class="table-cell">
+                    Notes <br />
+                    <span class="row_value">{{postNotes}}</span>
+                </td>
+            </tr>
+
+            <tr class="table-row">
+                <td class="table-cell" colspan="3">
+                    Measures <br />
+                    <span class="row_value">{{measuresArray}}</span>
+                </td>
+            </tr>
+        </table>
+
+
+        <div class="watermark">
+            <img src="https://thepowerportal.co.uk/static/media/PowerPortalLogo.0141fb98.png" />
+        </div>
+    </div>
+</body>
+
+</html>

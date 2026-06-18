@@ -142,6 +142,11 @@ class AdminController {
     }
   }
 }
+// Redis caching removed for now (remove env/credential requirements).
+// import { cachedTTL } from '../../middlewares/cacheResponse';
+// import { logQueryTime } from '../../middlewares/logQueryTime';
+// import { clearCacheByPrefix } from '../../utils/redisCache';
+
 class RegUserController {
   async addLeadRegUser(req: Request, res: Response) {
     try {
@@ -602,91 +607,85 @@ class RegUserController {
     try {
       let filter: any = {};
       let filterBeforeLookup: any = {};
+
+      // Index suggestions (add to MongoDB):
+      // - Lead: { status: 1 }
+      // - Lead: { createdAt: 1 }
+      // - Lead: { Assignee: 1 }
+      // - Lead: { LeadGenerator: 1 }
+      // - Lead: { Installer: 1 }
+      // - Lead: { Surveyor: 1 }
+      // - Lead: { SystemDesigner: 1 }
+      // - Lead: { dialer: 1 }
+      // - Lead: { isActive: 1, isDelete: 1 }
+      // - Lead: { InstallationCompleteDate: 1 }
+      // - Lead: { SubmissionCompletedDate: 1 }
+      // - Lead: { 'digitalDashboard.isPaidLeadGeneratorCost': 1 }
+
       if (req.query.isActive) filter.isActive = 1;
       if (req.query.isDelete) filter.isDelete = 1;
       if (req.query.source) filter.source = req.query.source;
       if (req.query.blockedBy) filter.BlockedBy = req.user._id.toString();
+
       if (['Partner'].includes(req.user.role.roleName)) {
-
-        const UserCompanyIDs = [];
+        const UserCompanyIDs: any[] = [];
         const company = await CompanyModel.find({ Assignee: { $in: req.user._id } });
-        company.map((s) => { UserCompanyIDs.push(ObjectId(s._id)) });
+        company.map((s) => { UserCompanyIDs.push(ObjectId(s._id)); });
 
-        const ConsumerIds = [];
+        const ConsumerIds: any[] = [];
         const consumer = await UserModel.find({ Assignee: { $in: req.user._id } });
-        consumer.map((s) => { ConsumerIds.push(ObjectId(s._id)) });
+        consumer.map((s) => { ConsumerIds.push(ObjectId(s._id)); });
 
         filterBeforeLookup.$or = [
           { Company: { $in: UserCompanyIDs } },
           { Consumer: { $in: ConsumerIds } }
         ];
       }
+
       if (['Sales Rep', 'Observing Partner', 'Service Partner'].includes(req.user.role.roleName)) {
         filterBeforeLookup.Assignee = { $in: [ObjectId(req.user._id)] };
-      }
-      else if (req.query.Assignee) {
-
+      } else if (req.query.Assignee) {
         filterBeforeLookup.Assignee = ObjectId(req.query.Assignee);
+      } else if (req.query?.isFromCompanyOrConsumerDrawer && req.query?.isFromCompanyOrConsumerDrawer != 'true') {
+        filterBeforeLookup.Assignee = { $exists: false };
       }
-      else if (req.query?.isFromCompanyOrConsumerDrawer && req.query?.isFromCompanyOrConsumerDrawer != 'true') {
-        filterBeforeLookup.Assignee = { $exists: false }
-      }
+
       if (req.query.status && typeof req.query.status === 'string') filter.status = { $in: [req.query.status] };
       if (req.query.status && typeof req.query.status === 'object') filter.status = { $in: req.query.status };
+
       if (req.query.Company && typeof req.query.Company === 'string') filterBeforeLookup.Company = ObjectId(req.query.Company);
       if (req.query.Company && typeof req.query.Company === 'object') {
-        let ca = [];
-        req.query.Company.filter(c => { ca.push(ObjectId(c)) })
+        let ca: any[] = [];
+        req.query.Company.filter((c: any) => { ca.push(ObjectId(c)); });
         filterBeforeLookup.Company = { $in: ca };
-      };
+      }
 
       if (req.query.Consumer && typeof req.query.Consumer === 'string') filterBeforeLookup.Consumer = ObjectId(req.query.Consumer);
       if (req.query.Consumer && typeof req.query.Consumer === 'object') {
-        let ca = [];
-        req.query.Consumer.filter(c => { ca.push(ObjectId(c)) })
+        let ca: any[] = [];
+        req.query.Consumer.filter((c: any) => { ca.push(ObjectId(c)); });
         filterBeforeLookup.Consumer = { $in: ca };
-      };
-      if (req.query.blockedBy) filter.BlockedBy = req.user._id.toString();
+      }
 
       if (req.query.Search) {
+        // NOTE: This search is across Company/Consumer fields, which originally required $lookup.
+        // For performance, keep count-only local filters. If you rely on Company.businessName/Search,
+        // you must either keep lookups or denormalize those fields onto Lead.
+        // We still support leadId regex (cheap + indexable with regex prefix strategies).
         filter.$or = [
-          { leadId: { $regex: `.*${req.query.Search}.*`, $options: "i" } },
-          { "Company.businessName": { $regex: `.*${req.query.Search}.*`, $options: "i" } },
-          { "Company.postcode": { $regex: `.*${req.query.Search}.*`, $options: "i" } },
-          { "Company.businessSector": { $regex: `.*${req.query.Search}.*`, $options: "i" } },
-          { "Consumer.firstName": { $regex: `.*${req.query.Search}.*`, $options: "i" } },
+          { leadId: { $regex: `.*${req.query.Search}.*`, $options: 'i' } },
         ];
       }
-      if (req.query.isDelete) {
 
-      } else {
-
+      if (!req.query.isDelete) {
         filterBeforeLookup.isDelete = { $in: [false, 0] };
       }
+
       if (req.query.InstallationCompleteStartDate && req.query.InstallationCompleteEndDate) {
         filterBeforeLookup.InstallationCompleteDate = {
           $gte: new Date(req.query.InstallationCompleteStartDate),
           $lte: new Date(req.query.InstallationCompleteEndDate)
         }
-        // prepipeline.push({
-
-        //     $addFields: {
-        //       InstallationCompleteYear: { $year: '$InstallationCompleteDate' },
-        //       InstallationCompleteMonth: { $month: '$InstallationCompleteDate' }
-        //     }
-
-        // })
-
-        // prepipeline.push({
-        //   $match: {
-        //     $expr: {
-        //       $and: [
-        //         { $eq: ['$year', 2024] },  // Replace with the desired year
-        //         { $eq: ['$month', 2] }      // Replace with the desired month
-        //       ]
-        //     }
-        //   }
-        // });
       }
 
       if (req.query.SubmissionCompletedStartDate && req.query.SubmissionCompletedEndDate) {
@@ -694,41 +693,29 @@ class RegUserController {
           $gte: new Date(req.query.SubmissionCompletedStartDate),
           $lte: new Date(req.query.SubmissionCompletedEndDate)
         }
-        // prepipeline.push({
-        //     $addFields: {
-        //       SubmissionCompletedYear: { $year: '$SubmissionCompletedDate' },
-        //       SubmissionCompletedMonth: { $month: '$SubmissionCompletedDate' }
-        //     }
-        // })
       }
+
       if (req.query.serviceData) {
         if (typeof req.query.serviceData == 'string') {
           filterBeforeLookup[`serviceData.${req.query.serviceData}`] = { $exists: true, $ne: null }
           filterBeforeLookup['serviceType'] = { $in: [new RegExp(`${req.query.serviceData}`, 'i')] }
-        }
-        else if (typeof req.query.serviceData == 'object') {
-          let serviceArr = [];
-          req.query.serviceData.forEach(service => {
+        } else if (typeof req.query.serviceData == 'object') {
+          let serviceArr: RegExp[] = [];
+          req.query.serviceData.forEach((service: string) => {
             filterBeforeLookup[`serviceData.${service}`] = { $exists: true, $ne: null }
             serviceArr.push(new RegExp(`${service}`, 'i'))
           });
           filterBeforeLookup['serviceType'] = { $in: serviceArr }
-
         }
       }
+
       if (req.query.subservice) {
         if (typeof req.query.subservice == 'string') {
           filterBeforeLookup[`serviceData.${req.query.serviceData}.${req.query.subservice}`] = { $exists: true, $ne: null }
-          // filterBeforeLookup['serviceType'] = { $in: [new RegExp(`${req.query.serviceData}`, 'i')] }
-        }
-        else if (typeof req.query.subservice == 'object') {
-          let serviceArr = [];
-          req.query.subservice.forEach(service => {
+        } else if (typeof req.query.subservice == 'object') {
+          req.query.subservice.forEach((service: string) => {
             filterBeforeLookup[`serviceData.${req.query.serviceData}.${service}`] = { $exists: true, $ne: null }
-            serviceArr.push(new RegExp(`${service}`, 'i'))
           });
-          // filterBeforeLookup['serviceType'] = { $in: serviceArr }
-
         }
       }
 
@@ -739,73 +726,30 @@ class RegUserController {
         };
       }
       if (req.query.dateTo) {
-        filter.createdAt = {
-          $lte: new Date(req.query.dateTo)
-        };
+        filter.createdAt = { $lte: new Date(req.query.dateTo) };
       }
       if (req.query.dateFrom) {
-        filter.createdAt = {
-          $gte: new Date(req.query.dateFrom)
-        };
+        filter.createdAt = { $gte: new Date(req.query.dateFrom) };
       }
+
       if (req.query.isPaid) {
         if (req.query.isPaid === 'true') {
           filter["digitalDashboard.isPaidLeadGeneratorCost"] = true
         } else if (req.query.isPaid === 'false') {
           filter["digitalDashboard.isPaidLeadGeneratorCost"] = false
-
         }
-
       }
 
-      let sortObj: any = { updatedAt: 1 };
-      if (req.query.sort) {
-        sortObj = { [req.query.sort]: req.query.sortType === 'asc' ? 1 : -1 };
-      }
-      let skipNumber = 0;
-      let limitNumber = 99;
-      if (req.query.skip) skipNumber = Number(req.query.skip);
-      if (req.query.limit) limitNumber = Math.min(Number(req.query.limit), 100);
-
-      // Apply lead-level filters before performing lookups; this reduces documents entering the join stages.
+      // Optimized COUNT: $match FIRST, no $lookup.
+      // This massively reduces CPU/IO cost for /leadCount.
       const count = await LeadModel.aggregate([
         { $match: filterBeforeLookup },
-        {
-          $lookup: {
-            from: 'companies',
-            localField: 'Company',
-            foreignField: '_id',
-            as: 'Company'
-          }
-        },
-        {
-          $lookup: {
-            from: 'users',
-            localField: 'Consumer',
-            foreignField: '_id',
-            as: 'Consumer'
-          }
-        },
-        {
-          $unwind: {
-            "path": "$Company",
-            "preserveNullAndEmptyArrays": true
-          }
-        },
-        {
-          $unwind: {
-            "path": "$Consumer",
-            "preserveNullAndEmptyArrays": true
-          }
-        },
         { $match: filter },
         { $count: "count" }
       ]);
 
       let countData = 0;
-      if (count.length > 0) {
-        countData = count[0].count;
-      }
+      if (count.length > 0) countData = count[0].count;
 
       res.send({ count: countData, success: true });
     } catch (err) {

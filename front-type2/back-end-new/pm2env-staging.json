@@ -1,0 +1,30 @@
+{
+    "apps" : [{
+      "name"      : "edan-power-staging",
+      "script"    : "dist/bin/app.js",
+      "instances" : "3",
+      "exec_mode" : "cluster",
+      "env": {
+        "COMMON_VARIABLE": "true",
+        "NODE_ENV": "staging",
+        "SERVER": "online"
+      },
+      "env_production" : {
+      }
+    }],
+    "deploy" : {
+      "production" : {
+        "user" : "gitlab-runner",
+        "host" : ["127.0.0.1"],
+        "ref"  : "origin/master",
+        "repo" : "backend",
+        "ssh_options": "StrictHostKeyChecking=no",
+        "pre-setup" : "npm install",
+        "post-setup": "ls -la",
+        "pre-deploy-local" : "echo 'This is a local executed command'",
+        "env"  : {
+          "NODE_ENV": "staging"
+        }
+      }
+    }
+  }

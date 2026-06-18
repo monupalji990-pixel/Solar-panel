@@ -1,0 +1,63 @@
+.task_board_new .task_board_header {
+  padding: 16px;
+}
+
+.task_board_new .task_board_header span.task_board_title {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.task_board_new
+  .react-trello-board
+  .smooth-dnd-draggable-wrapper
+  .react-trello-lane
+  header {
+  width: 100% !important;
+}
+
+.task_board_new
+  .react-trello-board
+  .smooth-dnd-draggable-wrapper
+  .react-trello-lane
+  header
+  span {
+  width: 100% !important;
+}
+
+.task_board_new .react-trello-board {
+  height: calc(100vh - 22vh);
+}
+
+
+.task_board_new .smooth-dnd-container.horizontal {
+  height: calc(100vh - 18vh);
+}
+
+.task_board_page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.task_board_page .page-icon {
+  background: #eeeeee;
+  padding: 7px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.task_board_page .page-icon svg {
+  width: 20px;
+}
+
+.task_board_page .task_pages {
+  font-weight: 500;
+  padding: 9px 9px 9px 12px;
+  background: #eeeeee;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  font-size: 15px;
+  color: #3f51b5;
+}

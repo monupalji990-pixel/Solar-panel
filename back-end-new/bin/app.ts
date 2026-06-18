@@ -42,7 +42,7 @@ const app = express();
 //     methods: ["GET", "POST"]
 //   } });
 
-app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.json({ limit: process.env.JSON_BODY_LIMIT || '10mb' }));
 //comment added
 /**
  * Connect to MongoDB.
@@ -67,7 +67,8 @@ if (process.env.NODE_ENV == "development") {
     }
 } else if (process.env.NODE_ENV == "staging") {
     app.set('port', process.env.STAGING_PORT);
-    mongoose.set('debug', true);
+    // Performance: avoid verbose query logging in staging.
+    // mongoose.set('debug', true);
 
     if (process.env.SERVER == "local") {
         mongodb_string = String(process.env.STAGING_LOCAL_MONGODB_URI as any);
@@ -75,6 +76,7 @@ if (process.env.NODE_ENV == "development") {
         mongodb_string = String(process.env.STAGING_ONLINE_MONGODB_URI as any);
     }
 } else if (process.env.NODE_ENV == "production") {
+
     // mongoose.set('debug', true);
 
     app.set('port', process.env.PRODUCTION_PORT);
@@ -139,7 +141,10 @@ if (shouldEnableStatusMonitor) {
         console.warn('express-status-monitor failed to start; continuing without it.', e);
     }
 }
-app.use(compression());
+app.use(compression({
+    // keep defaults; explicitly avoid disabling compression
+    level: process.env.NODE_ENV === 'production' ? 6 : 1,
+}));
 // app.use(sass({
 //     src: path.join(__dirname, 'public'),
 //     dest: path.join(__dirname, 'public')
@@ -147,7 +152,7 @@ app.use(compression());
 if (process.env.NODE_ENV !== 'test') {
     app.use(logger('dev'));
 }
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: process.env.JSON_BODY_LIMIT || '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 var cookie = {
@@ -197,6 +202,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use(function (req: { headers: { origin: any; }; }, res: { setHeader: (arg0: string, arg1: string | boolean) => void; }, next: () => void) {
     var allowedOrigins = [
         'http://localhost:3486',
+        'http://localhost:8087',
         'https://edan-frontend.onrender.com',
         'http://localhost:5173',
         'http://localhost:8092',
@@ -204,10 +210,11 @@ app.use(function (req: { headers: { origin: any; }; }, res: { setHeader: (arg0: 
         'https://edanpower.co.uk',
         'http://stage.thepowerportal.co.uk',
         // Render frontend origin (add if your frontend is hosted there)
-       
     ];
     var origin = req.headers.origin;
 
+    // If origin isn't explicitly allowed, DO NOT silently omit CORS headers.
+    // Instead, mirror it back when it matches our allowlist.
     if (allowedOrigins.indexOf(origin) > -1) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     }
@@ -229,6 +236,8 @@ app.use(function (req: { headers: { origin: any; }; }, res: { setHeader: (arg0: 
 /**
  * Primary app routes.
  */
+// Compression already applied above (keep as-is)
+// Middleware wiring for caching + query time logging is done per-route.
 require('./routing')(app);
 
 /**

@@ -173,5 +173,15 @@ const CompanySchema = new mongoose.Schema({
     ]
 }, { timestamps: true });
 
+// Indexes for listCompanyRegUser performance (filters + sort)
+CompanySchema.index({ Assignee: 1 });
+CompanySchema.index({ isDelete: 1 });
+CompanySchema.index({ isActive: 1 });
+CompanySchema.index({ isCompanyClose: 1 });
+CompanySchema.index({ BlockedBy: 1 });
+CompanySchema.index({ updatedAt: -1 });
+CompanySchema.index({ Assignee: 1, isActive: 1, isDelete: 1, isCompanyClose: 1, updatedAt: -1 });
+
 const Company = mongoose.model('Company', CompanySchema);
 export default Company;
+
