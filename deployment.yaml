@@ -27,4 +27,8 @@ spec:
         ports:
         - containerPort: PORT
       imagePullSecrets:
+<<<<<<< HEAD
       - name: DOCKER_SECRET
+=======
+      - name: DOCKER_SECRET
+>>>>>>> 470c462342eebc0ae572e1b3d9e152720a1199bf

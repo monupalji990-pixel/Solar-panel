@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 lib-cov
 *.seed
 *.log
@@ -65,3 +66,15 @@ dist
 build
 
 yarn.lock
+=======
+yarn.lock
+node_modules
+build
+package-lock.json
+yarn.lock
+yarn-error.log
+.env
+node_modules
+build
+dist
+>>>>>>> 470c462342eebc0ae572e1b3d9e152720a1199bf
