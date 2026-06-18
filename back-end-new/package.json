@@ -1,6 +1,6 @@
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
+
+
   "name": "edan-power-backend",
   "version": "0.0.9",
   "description": "Tidbit Boilerplate for javascript Application",
@@ -105,10 +105,8 @@
     "bcrypt": "4.0.1",
     "axios": "0.21.4",
     "lodash": "4.17.21"
-=======
-=======
->>>>>>> 31be9c3f22efcfb86e843204f7331dd6bb8b98f9
-  "name": "boilerplate",
+  },
+
   "description": "",
   "version": "1.0.1",
   "repository": {
@@ -309,9 +307,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-<<<<<<< HEAD
->>>>>>> 470c462342eebc0ae572e1b3d9e152720a1199bf
-=======
->>>>>>> 31be9c3f22efcfb86e843204f7331dd6bb8b98f9
+
+
+
+
   }
 }

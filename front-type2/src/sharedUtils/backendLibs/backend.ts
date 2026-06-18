@@ -63,10 +63,16 @@ export default class backend {
       this.startLoader();
       axios({
         method: "get",
-        url: that.baseURL + url,
+        url:
+          that.baseURL +
+          url +
+          ((url.includes("company/") || url.includes("consumer/"))
+            ? (url.includes("?") ? "&" : "?") + `_bb=${Date.now()}`
+            : ""),
         withCredentials: true,
         headers: {
           Authorization: "Bearer " + this.token,
+
         },
       })
         .then((response) => {

@@ -190,7 +190,13 @@ const consumerSlice = createSlice({
     },
     addConsumerFailure(state, action: PayloadAction<any>) {},
     currentConsumerData(state, action: PayloadAction<any>) {
-      state.currentConsumer = action.payload.data;
+      // Backend should return `{ success: true, data: <object> }`.
+      // But some flows may return `{ data: [ ... ] }`.
+      // Normalize to a single object for the view drawer.
+      const payloadData = action?.payload?.data ?? {};
+      state.currentConsumer = Array.isArray(payloadData)
+        ? payloadData[0] ?? {}
+        : payloadData;
       state.isLoadingData = false;
     },
     consumerMessageCode(state, action: PayloadAction<any>) {

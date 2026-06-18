@@ -1034,6 +1034,7 @@ export default class companyControllers extends ControllerUtils {
   }
 
   async listCompanySiteList(req: Request, res: Response) {
+    console.log("API CALL site_list: companyId=", req.query.companyId);
     let filter = {};
     filter = { company: req.query.companyId, };
     let query = SiteModel.find(filter).populate("User");

@@ -1,60 +1,34 @@
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "compilerOptions": {
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "pretty": true,
-        "strict": false,
-        "sourceMap": true,
-        "target": "es6",
-        "resolveJsonModule": true,
-        "outDir": "./dist",
-        "noImplicitThis": false,
-        "allowJs": true,
-        "skipLibCheck": true
-    },
-    "include": [
-        "bin/*.ts",
-        "middlewares/*.ts",
-        "models/*.ts",
-        "templates/*.ts",
-        "projects/**/*.ts",
-        "projects/docusign/config/*.txt",
-        "sharedModules/**/*.ts",
-        "test/**/*.ts",
-        "projects/**/*.json",
-        "sharedModules/**/*.json",
-        "projects/templates/pdf-digital-form.js",
-    ],
-    "exclude": [
-        "node_modules"
-    ]
-}
-=======
-=======
->>>>>>> 31be9c3f22efcfb86e843204f7331dd6bb8b98f9
   "compilerOptions": {
-    "noImplicitAny": false,
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
+    "pretty": true,
+    "strict": false,
+    "sourceMap": true,
+    "target": "es6",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react",
-    "baseUrl": "./src"
+    "outDir": "./dist",
+    "noImplicitThis": false,
+    "allowJs": true,
+    "skipLibCheck": true
   },
-  "include": ["src", "internals/startingTemplate/**/*"]
+  "include": [
+    "bin/*.ts",
+    "middlewares/*.ts",
+    "models/*.ts",
+    "templates/*.ts",
+    "projects/**/*.ts",
+    "projects/docusign/config/*.txt",
+    "sharedModules/**/*.ts",
+    "test/**/*.ts",
+    "projects/**/*.json",
+    "sharedModules/**/*.json",
+    "projects/templates/pdf-digital-form.js"
+  ],
+  "exclude": ["node_modules"]
 }
-<<<<<<< HEAD
->>>>>>> 470c462342eebc0ae572e1b3d9e152720a1199bf
-=======
->>>>>>> 31be9c3f22efcfb86e843204f7331dd6bb8b98f9
+
+
+
+
+

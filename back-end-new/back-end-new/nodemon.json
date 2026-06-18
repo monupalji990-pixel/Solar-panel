@@ -1,5 +1,0 @@
-{
-  "ext": "ts",
-  "ignore": ["src/**/*.spec.ts"],
-  "exec": "cross-env NODE_ENV=development NODE_APP_INSTANCE=0 SERVER=local ts-node ./bin/app.ts"
-}

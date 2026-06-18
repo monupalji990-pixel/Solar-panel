@@ -181,10 +181,16 @@ const companySlice = createSlice({
     addCompanyFailure(state, action: PayloadAction<any>) {},
     roleList(state, action: PayloadAction<any>) {},
     roleListSuccess(state, action: PayloadAction<any>) {},
-    editCompany(state, action: PayloadAction<any>) {},
+editCompany(state, action: PayloadAction<any>) {},
     currentCompanyrData(state, action: PayloadAction<any>) {
-      state.currentCompany = action.payload.company;
-    },
+  const payloadCompany = action?.payload?.company;
+  const payloadData = action?.payload?.data;
+  const normalizedData = Array.isArray(payloadData)
+    ? payloadData[0] ?? {}
+    : payloadData ?? {};
+
+  state.currentCompany = payloadCompany ?? normalizedData;
+},
     SlugUpdate(state, action: PayloadAction<any>) {
       state.slug = action.payload.slug;
       state.type = action.payload.companyType;

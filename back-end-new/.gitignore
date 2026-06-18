@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
+
 lib-cov
 *.seed
 *.log
@@ -67,9 +67,9 @@ dist
 build
 
 yarn.lock
-=======
-=======
->>>>>>> 31be9c3f22efcfb86e843204f7331dd6bb8b98f9
+
+
+
 yarn.lock
 node_modules
 build
@@ -79,9 +79,9 @@ yarn-error.log
 .env
 node_modules
 build
-<<<<<<< HEAD
+
 dist
->>>>>>> 470c462342eebc0ae572e1b3d9e152720a1199bf
-=======
+
+
 dist
->>>>>>> 31be9c3f22efcfb86e843204f7331dd6bb8b98f9
+

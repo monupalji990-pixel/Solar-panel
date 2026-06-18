@@ -26,6 +26,7 @@ export default new (class CompanyClass extends backend {
 
     viewCompany(data, payload) {
         return this.get(`company/${data.slug}/show/${payload.companyId}`);
+         
     }
 
     contactListOfCompany(query, payload) {

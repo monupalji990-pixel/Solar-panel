@@ -1,3 +1,0 @@
-{
-    "exec": "cross-env UV_THREADPOOL_SIZE=9 NODE_ENV=staging node controller.js"
-  }
